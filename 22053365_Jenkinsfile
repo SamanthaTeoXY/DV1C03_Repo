@@ -5,6 +5,12 @@ pipeliine {
       label 'master
     }
   }
+  agent any
+  parameters {
+   choice(name: 'PROMPT', choices:['Proceed', 'No'], description: 'Do you want to release the work?')
+
+    
+  }
   tools {
         maven 'maven3'
   }
@@ -15,3 +21,50 @@ pipeliine {
              numToKeepStr: '10'
            }
     }
+   environment {
+     APP_NAME = "STUDENT_APP"
+     APP_ENV ="DEV"
+   }
+   stages {
+     stage('S1_22053365'){
+       steps {
+         sh 'echo "S1_22053365: Environment Preperation Completed"'
+       }
+       
+     }
+     stage('S2_22053365'){
+       steps {
+         sh 'echo "S2_22053365: Web Server Creation Completed"'
+       }
+       
+     }
+     stage('Parallel'){
+       parallel {
+         stage('S3_22053365'){
+           steps {
+             sh 'echo "S3_22053365: API Test Completed"'
+           }
+         }
+         stage('S4_22053365'){
+           steps {
+             sh 'echo "S4_22053365: DAST Security Test Completed"'
+           }
+        }
+       }
+       
+     }
+     stage('S5_22053365'){
+        steps {
+             echo "${params.PROMPT}"
+           }
+     }
+     stage('S6_22053365'){
+       if (params.PROMPT == 'Proceed'){
+        echo "Work Released-22053365"
+       } else {
+        Abort
+       }
+     
+       
+     }
+   }  
